@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+       <link type="text/css" rel="stylesheet" href="css/custom.css"  media="screen,projection"/>
+      <title>Font Converter</title>
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+    <body>
+
+        <nav class="indigo darken-4">
+            <div class="nav-wrapper">
+              <center><a href="index.html">Font Converter</a></center>
+            </div>
+          </nav>
+          
+    <div class="container">
+      <div class="card">
+        <div class="card-content">
+            <p>Unicode Font Area <span id="unierror" class="error"></span></p>
+            <textarea id="unicode" onfocus="handleOnFocus(this)" onblur="handleOnBlur()"class="mm3  animated materialize-textarea"></textarea>
+            <a class="waves-effect waves-light btn-small indigo darken-4 right" onclick="unicopy();">Copy</a>
+            <div style="clear:both;">&nbsp;</div>
+        </div>
+      </div>
+
+      <div class="card">
+          <div class="card-content">
+              <p>Zawgyi Font Area <span id="zgerror" class="error"></span></p>
+              <textarea id="zawgyi" onfocus="handleOnFocus(this)" onblur="handleOnBlur()" class="zawgyi animated materialize-textarea"></textarea>
+              <a class="waves-effect waves-light btn-small indigo darken-4 right" onclick="zgcopy();">Copy</a>
+              <div style="clear:both;">&nbsp;</div>
+          </div>
+      </div>
+
+      <div class="card">
+          <div class="card-content">
+              <a href="" class="waves-effect waves-light btn orange darken-4" onclick="reload();">Clear</a>
+              <a class="waves-effect waves-light btn modal-trigger indigo darken-4 right" href="#modal1">About</a>
+          </div>
+      </div>
+
+
+     
+    	</div>
+
+  <!-- Modal Structure -->
+  <div id="modal1" class="modal txt-center">
+    <div class="modal-content">
+      <h4>About</h4>
+      <p>Convert font formats between Unicode and Zawgyi. Adapted from Rabbit converter.</p>
+      <p>Aung Pyae</p>
+	  <p>Visit <a href="http://aungpyae.me" target="_blank">aungpyae.me</a></p>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-close waves-effect waves-green btn btn-flat">Close</a>
+    </div>
+  </div>
+
+      <!--JavaScript at end of body for optimized loading-->
+      <script type="text/javascript" src="js/jquery.js"></script>
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+      <script type="text/javascript" src="js/convert.js"></script>
+      <script type="text/javascript" src="js/design.js"></script>
+
+<script>
+  //design
+$(document).ready(function(){
+	$('.modal').modal();
+	$('.sidenav').sidenav(); 
+});
+
+//textarea
+
+var textarea = document.querySelector('textarea');
+textarea.addEventListener('keydown', autosize);
+function autosize(){
+  var el = this;
+  setTimeout(function(){
+    el.style.cssText = 'height:auto; padding:0';
+    // for box-sizing other than "content-box" use:
+    // el.style.cssText = '-moz-box-sizing:content-box';
+    el.style.cssText = 'height:' + el.scrollHeight + 'px';
+  },0);
+}
+
+//converting functions
+
+var unicode = document.getElementById("unicode");
+var zawgyi = document.getElementById("zawgyi");
+var unierror = document.getElementById("unierror");
+var unisuccess = document.getElementById("unisuccess");
+var zgerror = document.getElementById("zgerror");
+var zgsuccess = document.getElementById("zgsuccess");
+
+  function reload(){
+    unicode.value='';zawgyi.value='';
+    unierror.innerHTML='';zgerror.innerHTML='';
+    unisuccess.innerHTML='';zgsuccess.innerHTML='';
+  }
+
+  function reset_error(){
+    unierror.innerHTML='';zgerror.innerHTML='';
+  }
+
+  function unicopy(){
+    if(unicode.value==''){
+      unierror.innerHTML='- Place your unicode font first!';
+    }
+    else{
+      unicode.select();
+      document.execCommand('copy');
+      unisuccess.innerHTML='Unicode copied.';zgsuccess.innerHTML='';
+    }
+  }
+
+  function zgcopy(){
+    if(zawgyi.value==''){
+      zgerror.innerHTML='- Place your zawgyi font first!';
+    }
+    else{
+      zawgyi.select();
+      document.execCommand('copy');
+      zgsuccess.innerHTML='Zawgyi copied.';unisuccess.innerHTML='';
+    }
+  }
+
+var textFieldInFocus;
+function handleOnFocus(form_element)
+{
+   textFieldInFocus = form_element;
+   reset_error();
+}
+function handleOnBlur()
+{
+   textFieldInFocus = null;
+}
+
+
+onchangeHandler(unicode,zawgyi,"uni2zg");
+onchangeHandler(zawgyi,unicode,"zg2uni");
+
+function converter(textField,tochangeField,toconv) {
+    if(tochangeField != textFieldInFocus) {
+        if(toconv == "uni2zg") {
+              tochangeField.value = Rabbit.uni2zg(textField.value);
+        }
+        else {
+             tochangeField.value = Rabbit.zg2uni(textField.value);
+        }
+    }
+}
+
+function onchangeHandler(textField,tochangeField,toconv) {
+    
+    if (textField.addEventListener) {
+      textField.addEventListener('input', function() {
+          converter(textField,tochangeField,toconv);
+      }, false);
+    } else if (textField.attachEvent) {
+      textField.attachEvent('onpropertychange', function() {
+        // IE
+          converter(textField,tochangeField,toconv);
+      });
+    }
+    
+}
+
+
+$(function(){
+        $('.normal').autosize();
+        $('.animated').autosize({append: "\n"});
+});
+
+
+</script>
+
+    </body>
+  </html>

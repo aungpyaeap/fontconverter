@@ -1,0 +1,47 @@
+@font-face{
+    font-family: zawgyi;
+    src:url('../fonts/zawgyi.ttf');
+}
+@font-face{
+    font-family: mm3;
+    src:url('../fonts/Pyidaungsu.ttf');
+}
+@font-face{
+    font-family: english;
+    src:url('../fonts/english.ttf');
+}
+body{
+  font-family: english,serif;
+  background-color: #efebe9;
+}
+.text-justify{
+    text-align: justify;
+}
+.mm3{
+    font-family: mm3,sans-serif;
+}
+.zawgyi{
+    font-family: zawgyi,sans-serif;
+}
+
+textarea{
+  resize: none;
+  overflow: hidden;
+}
+
+.animated {
+          -webkit-transition: height 0.2s;
+        -moz-transition: height 0.2s;
+        transition: height 0.2s;
+}
+
+.green{
+  color: green;
+}
+.error{
+  color: red;
+}
+
+.txt-center{
+  text-align: center;
+}
